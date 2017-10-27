@@ -1,0 +1,41 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Parameters" : {
+        "BucketName" : {
+          "Type" : "String",
+          "Default" : "",
+          "Description" : "Enter a globally unique name for a bucket to store your data into. The bucket name must contain only lowercase letters, numbers, periods (.), and dashes (-). "
+        }
+    },
+    "Resources": {
+      "GlueServiceRole": {
+        "Type": "AWS::IAM::Role",
+        "Properties": {
+            "AssumeRolePolicyDocument": {
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": [
+                                "glue.amazonaws.com"
+                            ]
+                        },
+                        "Action": [
+                            "sts:AssumeRole"
+                        ]
+                    }
+                ]
+            },
+            "ManagedPolicyArns":[
+                                "arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess",
+                                "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess",
+                                "arn:aws:iam::aws:policy/AmazonS3FullAccess"],
+            "RoleName": "GlueServiceRole"
+        }
+      },
+      "S3Bucket":{
+          "Type":"AWS::S3::Bucket",
+          "BucketName":{"Ref":"BucketName"}
+      }
+    }
+}
