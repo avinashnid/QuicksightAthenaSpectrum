@@ -133,6 +133,77 @@ Congratulations, you queried your first S3 file through Amazon Athena!
 Amazon Redshift Spectrum enables you to run Amazon Redshift SQL queries against exabytes of data in Amazon S3. With Redshift Spectrum, you can extend the analytic power of Amazon Redshift beyond data stored on local disks in your 
 data warehouse to query vast amounts of unstructured data in your Amazon S3 “data lake”
 
+To use the spectrum service, it is necessary to instiantiate a Redshift Cluster.Before you begin setting up an Amazon Redshift cluster, make sure that you complete the following steps
+1. [Set Up Prerequisites](http://docs.aws.amazon.com/redshift/latest/gsg/rs-gsg-prereq.html)
+2. [Create an IAM Role](http://docs.aws.amazon.com/redshift/latest/gsg/rs-gsg-create-an-iam-role.html)
+Now that you have the prerequisites completed, you can launch your Amazon Redshift cluster. 
+
+3. Click on the **Amazon Redshift** link from the Services dropdown.
+4. On the Amazon Redshift Dashboard, choose Launch Cluster. 
+5. On the Cluster Details page, enter the following values and then choose Continue:
+   - Cluster Identifier: type examplecluster.
+   - Database Name: leave this box blank. Amazon Redshift will create a default database named dev.
+   - Database Port: type the port number on which the database will accept connections. You should have determined the port number in the prerequisite step of this tutorial. You cannot change the port after launching the cluster, so make sure that you have an open port number in your firewall so that you can connect from SQL client tools to the database in the cluster.
+   - Master User Name: type masteruser. You will use this username and password to connect to your database after the cluster is available.
+   - Master User Password and Confirm Password: type a password for the master user account.
+6. On the Node Configuration page, select the following values and then choose Continue:
+   - Node Type: dc2.large
+   - Cluster Type: Single Node
+7. On the Additional Configuration page, you will see different options depending on your AWS account, which determines the type of platform the cluster uses. To keep things simple select the EC2-VPC to launch your cluster. Use the following
+   values to populate the various fields in the screen -
+   - Cluster Parameter Group: select the default parameter group.
+   - Encrypt Database: None.
+   - Choose a VPC: Default VPC (vpc-xxxxxxxx)
+   - Cluster Subnet Group: default
+   - Publicly Accessible: Yes
+   - Choose a Public IP Address: No
+   - Enhanced VPC Routing: No
+   - Availability Zone: No Preference
+   - VPC Security Groups: default (sg-xxxxxxxx)
+   - Create CloudWatch Alarm: No
+8. Associate an IAM role with the cluster.
+   For AvailableRoles, choose myRedshiftRole (defined in step 2) and then choose Continue.  
+9. On the Review page, review the selections that you’ve made and then choose Launch Cluster
+10. A confirmation page appears and the cluster will take a few minutes to finish. Choose Close to return to the list of clusters.
+11. On the Clusters page, choose the cluster that you just launched and review the Cluster Status information. 
+    Make sure that the Cluster Status is available and the Database Health is healthy before you try to connect to the database.  
+12. Before you can connect to the cluster, you need to configure a security group to authorize access.
+13. To Configure the VPC Security Group (EC2-VPC Platform)
+   - In the Amazon Redshift console, in the navigation pane, choose Clusters.
+   - Choose examplecluster to open it, and make sure you are on the Configuration tab.
+   - Under Cluster Properties, for VPC Security Groups, choose your security group.
+   - After your security group opens in the Amazon EC2 console, choose the Inbound tab.
+   - Choose Edit, and enter the following, then choose Save:
+     - Type: Custom TCP Rule.
+     - Protocol: TCP.
+     - Port Range: type the same port number that you used when you launched the cluster. The default port for Amazon Redshift is 5439, but your port might be different.
+     - Source: select Custom IP, then type 0.0.0.0/0.
+     **Note**
+     Using 0.0.0.0/0 is not recommended for anything other than demonstration purposes because it allows access from any computer on the internet. In a real environment, you would create inbound rules based on your own network settings.
+14. Connect to the cluster using the SQL Workbench/J client(installed in the prerequisites section in step 1). To connect from SQL Workbench perform the following steps:
+	- Open SQL Workbench/J.
+	- Choose File, and then choose Connect window.
+	- Choose Create a new connection profile.
+	- In the New profile text box, type a name for the profile.
+	- Choose Manage Drivers. The Manage Drivers dialog opens.
+	- Choose the Create a new entry button. In the Name text box, type a name for the driver.
+	  ![alt text](/images/managedrivers.png)  
+    - Choose the folder icon next to the Library box, navigate to the location of the driver, select it, and then choose Open.  
+      ![alt text](/images/selectdrivers.png)
+	  If the Please select one driver dialog box displays, select com.amazon.redshift.jdbc4.Driver or com.amazon.redshift.jdbc41.Driver and choose OK. SQL Workbench/J automatically completes the Classname box. 
+	  Leave the Sample URL box blank, and then choose OK.
+	- In the Driver box, choose the driver you just added.
+	- In URL, copy the JDBC URL from the Amazon Redshift (as listed below) console and paste it.
+	  - In the Amazon Redshift console, in the navigation pane, choose Clusters. 
+	  - Choose examplecluster to open it, and make sure you are on the Configuration tab.
+	  - On the Configuration tab, under Cluster Database Properties, copy the JDBC URL of the cluster.
+	  ![alt text](/images/jdbcconnection.png)  
+	- In Username, type masteruser.
+	- In Password, type the password associated with the master user account.
+	- Choose the Autocommit box.
+	- Save the profile using Save profile list icon  
+At this point you have a database called dev in the redshift cluster and connected to it.
+
 Congratulations, you queried your first S3 file through Amazon Athena!
 <hr/></br>
 
