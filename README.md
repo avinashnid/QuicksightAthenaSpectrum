@@ -135,7 +135,7 @@ data warehouse to query vast amounts of unstructured data in your Amazon S3 “d
 
 To use the spectrum service, it is necessary to instiantiate a Redshift Cluster.Before you begin setting up an Amazon Redshift cluster, make sure that you complete the following steps
 1. [Set Up Prerequisites](http://docs.aws.amazon.com/redshift/latest/gsg/rs-gsg-prereq.html)
-2. [Create an IAM Role](http://docs.aws.amazon.com/redshift/latest/gsg/rs-gsg-create-an-iam-role.html)
+2. [Create an IAM Role](http://docs.aws.amazon.com/redshift/latest/gsg/rs-gsg-create-an-iam-role.html)<hr/></br>
 Now that you have the prerequisites completed, you can launch your Amazon Redshift cluster. 
 
 3. Click on the **Amazon Redshift** link from the Services dropdown.
