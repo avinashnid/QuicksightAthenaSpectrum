@@ -130,7 +130,9 @@ Congratulations, you queried your first S3 file through Amazon Athena!
 <hr/></br>
 
 # Query a file on S3 With Spectrum
-To get started with Athena and QuickSight, we need to provide data to query. This data may originate from a variety of sources into S3, but for this example we will upload a file into S3 manually.
+Amazon Redshift Spectrum enables you to run Amazon Redshift SQL queries against exabytes of data in Amazon S3. With Redshift Spectrum, you can extend the analytic power of Amazon Redshift beyond data stored on local disks in your 
+data warehouse to query vast amounts of unstructured data in your Amazon S3 “data lake”
+
 Congratulations, you queried your first S3 file through Amazon Athena!
 <hr/></br>
 
