@@ -129,7 +129,7 @@ More resources:
 Congratulations, you queried your first S3 file through Amazon Athena!
 <hr/></br>
 
-# Query a file on S3 With Athena
+# Query a file on S3 With Spectrum
 To get started with Athena and QuickSight, we need to provide data to query. This data may originate from a variety of sources into S3, but for this example we will upload a file into S3 manually.
 Congratulations, you queried your first S3 file through Amazon Athena!
 <hr/></br>
