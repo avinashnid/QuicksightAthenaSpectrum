@@ -1,10 +1,11 @@
-# Quicksight and Athena Workshop - AWS & Slalom
-Amazon QuickSight and Amazon Athena workshop. Workshop will focus on ingesting data into Athena, combining it with other data sources, and visualizing it in QuickSight.
+# Serverless Analytics Workshop
+Amazon QuickSight, Amazon Athena and Amazon Spectrum workshop. Workshop will focus on ingesting data into Athena & Spectrum, combining it with other data sources, and visualizing it in QuickSight.
 
-Hands on workshop is broken up into 5 different sections to get you familiar with the Quicksight and Athena products:</br>
+Hands on workshop is broken up into 5 different sections to get you familiar with the Quicksight, Athena & Spectrum services:</br>
 - [10 min  - Sign Up for AWS](#sign-up-for-aws)</br>
 - [10 min - Architecture and Permissions](#architecture-and-permissions)</br>
-- [10 min - Query a file on S3](#query-a-file-on-s3)</br>
+- [10 min - Query a file on S3 using Athena](#query-a-file-on-s3-with-athena)</br>
+- [10 min - Query a file on S3 using Spectrum](#query-a-file-on-s3-with-spectrum)</br>
 - [10 min - Introducing Glue & Athena](#introduction-glue-and-athena)</br>
 - [20 min - Breakout Exercises](#breakout-exercises)</br>
 - [50 min - Visualizing and Dashboarding with QuickSight](#visualizing-and-dashboarding-with-quicksight)</br>
@@ -45,7 +46,7 @@ https://s3-us-west-2.amazonaws.com/slalom-seattle-ima/scripts/cloudformation/cf_
 ![alt text](/images/cloudformationStatus.PNG)
 <hr/></br>
 
-# Query a file on S3
+# Query a file on S3 With Athena
 To get started with Athena and QuickSight, we need to provide data to query. This data may originate from a variety of sources into S3, but for this example we will upload a file into S3 manually.
 1. **Open the S3 Console** from the Services drop down menu
 2. Click your newly created bucket, by you or by our CloudFormation script.
@@ -125,6 +126,11 @@ More resources:
 - [Athena Supported Formats](http://docs.aws.amazon.com/athena/latest/ug/supported-formats.html)
 - [Athena Language Reference](http://docs.aws.amazon.com/athena/latest/ug/language-reference.html)
 
+Congratulations, you queried your first S3 file through Amazon Athena!
+<hr/></br>
+
+# Query a file on S3 With Athena
+To get started with Athena and QuickSight, we need to provide data to query. This data may originate from a variety of sources into S3, but for this example we will upload a file into S3 manually.
 Congratulations, you queried your first S3 file through Amazon Athena!
 <hr/></br>
 
