@@ -227,7 +227,7 @@ an external schema (spectrum) for spectrum to access. This can be achieved by ex
 
 15. Create external schema and table
 ```sql
-	create external schema spectrum 
+	create external schema labs 
 	from data catalog 
 	database 'labs' 
 	iam_role 'yourIAMrole/mySpectrumRole'
@@ -256,7 +256,7 @@ an external schema (spectrum) for spectrum to access. This can be achieved by ex
 17. Run the following SQL statement and make sure that your table is reading correctly:
 ```sql
 	SELECT * 
-	FROM spectrum.sales LIMIT 100
+	FROM labs.sales LIMIT 100
 ```
 Congratulations, you queried your first S3 file through Amazon Spectrum!
 
@@ -288,10 +288,10 @@ below depicts the use case -
 ```
 20. The following query joins the external table SPECTRUM.SALES with the local table EVENT to find the total sales for the top ten events
 ```sql
-	select top 10 spectrum.sales.eventid, sum(spectrum.sales.pricepaid) from spectrum.sales, event
-	where spectrum.sales.eventid = event.eventid
-	and spectrum.sales.pricepaid > 30
-	group by spectrum.sales.eventid
+	select top 10 labs.sales.eventid, sum(labs.sales.pricepaid) from labs.sales, event
+	where labs.sales.eventid = event.eventid
+	and labs.sales.pricepaid > 30
+	group by labs.sales.eventid
 	order by 2 desc;
 ```
 <hr/></br>
