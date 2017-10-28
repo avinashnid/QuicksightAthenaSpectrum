@@ -6,7 +6,7 @@ Hands on workshop is broken up into 5 different sections to get you familiar wit
 - [10 min - Architecture and Permissions](#architecture-and-permissions)</br>
 - [10 min - Query a file on S3 using Athena](#query-a-file-on-s3-with-athena)</br>
 - [10 min - Query a file on S3 using Spectrum](#query-a-file-on-s3-with-spectrum)</br>
-- [10 min - Introducing Glue & Athena](#introduction-glue-and-athena)</br>
+- [10 min - Integrating Glue,Athena & Spectrum](#introduction-glue-and-athena)</br>
 - [20 min - Breakout Exercises](#breakout-exercises)</br>
 - [50 min - Visualizing and Dashboarding with QuickSight](#visualizing-and-dashboarding-with-quicksight)</br>
 
