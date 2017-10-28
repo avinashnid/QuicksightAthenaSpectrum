@@ -215,15 +215,17 @@ Now that you have the prerequisites completed, you can launch your Amazon Redshi
 
 At this point you have a database called dev in the redshift cluster and connected to it using the SQL Workbench/J client. 
 To get started with Spectrum, we need to provide data to query. This data may originate from a variety of sources into S3, but for this example we will upload a file into S3 manually.
-1. **Open the S3 Console** from the Services drop down menu
-2. Hit **Create folder** and name it "sales"
-3. Download sample dataset [Sales](https://slalom-seattle-ima.s3-us-west-2.amazonaws.com/docs/sales_ts.zip). Unzip the dataset files into a folder. In the sales folder Click on  **Upload** and selec the **sales_ts.000** file.
-4. Make note of the folders you saved this file under.
+  - **Open the S3 Console** from the Services drop down menu
+  - Hit **Create folder** and name it "B2B"
+  - Create folders within B2B called "sales" and "Events"
+  - Download sample dataset [Sales](https://slalom-seattle-ima.s3-us-west-2.amazonaws.com/docs/sales_ts.zip). Unzip the dataset files into a folder. In the sales folder Click on  **Upload** and select the **sales_ts.000** .
+    In the Events folder, click **Upload** and select the **allevents_pipe.txt** file.
+Make note of the folders you saved this file under.
 
 To start querying Sales data in S3 using Spectrum, we need to create an external table (Sales) and 
-an external database (spectrum) for spectrum to access. This can be achieved by executing the following SQL statements on the SQL Workbench Client 
+an external schema (spectrum) for spectrum to access. This can be achieved by executing the following SQL statements on the SQL Workbench Client 
 
-1. Create external schema and table
+15. Create external schema and table
 ```sql
 	create external schema spectrum 
 	from data catalog 
@@ -232,40 +234,66 @@ an external database (spectrum) for spectrum to access. This can be achieved by 
 	create external database if not exists;
 ```
 
-2. 
+16. 
 ```sql 
-create external table spectrum.sales(
-salesid integer,
-listid integer,
-sellerid integer,
-buyerid integer,
-eventid integer,
-dateid smallint,
-qtysold smallint,
-pricepaid decimal(8,2),
-commission decimal(8,2),
-saletime timestamp)
-row format delimited
-fields terminated by '\t'
-stored as textfile
-location 's3://<yourbucket>/sales/'
-table properties ('numRows'='172000');
+	create external table spectrum.sales(
+	salesid integer,
+	listid integer,
+	sellerid integer,
+	buyerid integer,
+	eventid integer,
+	dateid smallint,
+	qtysold smallint,
+	pricepaid decimal(8,2),
+	commission decimal(8,2),
+	saletime timestamp)
+	row format delimited
+	fields terminated by '\t'
+	stored as textfile
+	location 's3://<yourbucket>/B2B/sales/'
+	table properties ('numRows'='172000');
 ``` 
-3. Run the following SQL statement and make sure that your table is reading correctly:
+17. Run the following SQL statement and make sure that your table is reading correctly:
 ```sql
-SELECT * 
-FROM spectrum.orders LIMIT 100
+	SELECT * 
+	FROM spectrum.sales LIMIT 100
 ```
 Congratulations, you queried your first S3 file through Amazon Spectrum!
 
-You can view the details of the queries executed by Spectrum by querying the SVL_S3QUERY.
+You can view the details of the queries executed by Spectrum by querying the SVL_S3QUERY system view.
 ```sql
-select query, segment, slice, elapsed, s3_scanned_rows, s3_scanned_bytes, s3query_returned_rows, s3query_returned_bytes, files 
-from svl_s3query 
-where query = pg_last_query_id() 
-order by query,segment,slice; 
+	select query, segment, slice, elapsed, s3_scanned_rows, s3_scanned_bytes, s3query_returned_rows, s3query_returned_bytes, files 
+	from svl_s3query 
+	where query = pg_last_query_id() 
+	order by query,segment,slice; 
 ```
+One of the common use cases for spectrum is to keep the larger fact tables in Amazon S3 and your smaller dimension tables in Amazon Redshift and then perform a join across the data sets in S3 and in Redshift Cluster. The steps listed
+below depicts the use case -
 
+18. Create an EVENT table (dimension table) in Redshift. Note that this table is internal to Redshift. 
+```sql
+	create table event(
+	eventid integer not null distkey,
+	venueid smallint not null,
+	catid smallint not null,
+	dateid smallint not null sortkey,
+	eventname varchar(200),
+	starttime timestamp); 
+```
+19. Load the EVENT table in Redshift using the COPY command with the data being pulled from Events folder in B2B. Replace the IAM role ARN in the following COPY command with the role ARN you created in step 2.
+```sql
+	copy event from 's3://yourbucket/B2B/Events/allevents_pipe.txt' 
+	iam_role 'yourarn/mySpectrumRole'
+	delimiter '|' timeformat 'YYYY-MM-DD HH:MI:SS' region 'us-east-1';
+```
+20. The following query joins the external table SPECTRUM.SALES with the local table EVENT to find the total sales for the top ten events
+```sql
+	select top 10 spectrum.sales.eventid, sum(spectrum.sales.pricepaid) from spectrum.sales, event
+	where spectrum.sales.eventid = event.eventid
+	and spectrum.sales.pricepaid > 30
+	group by spectrum.sales.eventid
+	order by 2 desc;
+```
 <hr/></br>
 
 # Introducing Glue and Athena
