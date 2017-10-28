@@ -236,7 +236,7 @@ an external schema (spectrum) for spectrum to access. This can be achieved by ex
 
 16. 
 ```sql 
-	create external table spectrum.sales(
+	create external table labs.sales(
 	salesid integer,
 	listid integer,
 	sellerid integer,
