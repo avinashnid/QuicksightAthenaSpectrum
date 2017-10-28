@@ -133,9 +133,19 @@ Congratulations, you queried your first S3 file through Amazon Athena!
 Amazon Redshift Spectrum enables you to run Amazon Redshift SQL queries against exabytes of data in Amazon S3. With Redshift Spectrum, you can extend the analytic power of Amazon Redshift beyond data stored on local disks in your 
 data warehouse to query vast amounts of unstructured data in your Amazon S3 “data lake”
 
-To use the spectrum service, it is necessary to instiantiate a Redshift Cluster.Before you begin setting up an Amazon Redshift cluster, make sure that you complete the following steps
+To use the spectrum service, you need to instantiate a Redshift Cluster.Before you begin setting up an Amazon Redshift cluster, pls make sure that you complete the following pre-req steps
 1. [Set Up Prerequisites](http://docs.aws.amazon.com/redshift/latest/gsg/rs-gsg-prereq.html)
-2. [Create an IAM Role](http://docs.aws.amazon.com/redshift/latest/gsg/rs-gsg-create-an-iam-role.html)</br>
+2. Create an IAM role for Sprectum
+    - Open the IAM Console.
+    - In the navigation pane, choose Roles.
+    - Choose Create New Role.
+    - Choose AWS Service Role, and then scroll to Amazon Redshift. Choose Select.
+    - The Attach Policy page appears. Choose AmazonS3ReadOnlyAccess and AmazonAthenaFullAccess. Choose Next Step.
+    - For Role Name, type a name for your role, for example mySpectrumRole.
+    - Review the information, and then choose Create Role.
+    - Copy the Role ARN to your clipboard—this value is the Amazon Resource Name (ARN) for the role that you just created. You use that value when you create external tables to reference your data files on Amazon S3.
+ </br>
+
 Now that you have the prerequisites completed, you can launch your Amazon Redshift cluster. 
 
 3. Click on the **Amazon Redshift** link from the Services dropdown.
@@ -162,7 +172,7 @@ Now that you have the prerequisites completed, you can launch your Amazon Redshi
    - VPC Security Groups: default (sg-xxxxxxxx)
    - Create CloudWatch Alarm: No
 8. Associate an IAM role with the cluster.
-   For AvailableRoles, choose myRedshiftRole (defined in step 2) and then choose Continue.  
+   For AvailableRoles, choose mySpectrumRole (defined in step 2) and then choose Continue.  
 9. On the Review page, review the selections that you’ve made and then choose Launch Cluster
 10. A confirmation page appears and the cluster will take a few minutes to finish. Choose Close to return to the list of clusters.
 11. On the Clusters page, choose the cluster that you just launched and review the Cluster Status information. 
@@ -201,10 +211,61 @@ Now that you have the prerequisites completed, you can launch your Amazon Redshi
 	- In Username, type masteruser.
 	- In Password, type the password associated with the master user account.
 	- Choose the Autocommit box.
-	- Save the profile using Save profile list icon  
-At this point you have a database called dev in the redshift cluster and connected to it.
+	- Save the profile using Save profile list icon</br>  
 
-Congratulations, you queried your first S3 file through Amazon Athena!
+At this point you have a database called dev in the redshift cluster and connected to it using the SQL Workbench/J client. 
+To get started with Spectrum, we need to provide data to query. This data may originate from a variety of sources into S3, but for this example we will upload a file into S3 manually.
+1. **Open the S3 Console** from the Services drop down menu
+2. Hit **Create folder** and name it "sales"
+3. Download sample dataset [Sales](https://slalom-seattle-ima.s3-us-west-2.amazonaws.com/docs/sales_ts.zip). Unzip the dataset files into a folder. In the sales folder Click on  **Upload** and selec the **sales_ts.000** file.
+4. Make note of the folders you saved this file under.
+
+To start querying Sales data in S3 using Spectrum, we need to create an external table (Sales) and 
+an external database (spectrum) for spectrum to access. This can be achieved by executing the following SQL statements on the SQL Workbench Client 
+
+1. Create external schema and table
+```sql
+	create external schema spectrum 
+	from data catalog 
+	database 'labs' 
+	iam_role 'yourIAMrole/mySpectrumRole'
+	create external database if not exists;
+```
+
+2. 
+```sql 
+create external table spectrum.sales(
+salesid integer,
+listid integer,
+sellerid integer,
+buyerid integer,
+eventid integer,
+dateid smallint,
+qtysold smallint,
+pricepaid decimal(8,2),
+commission decimal(8,2),
+saletime timestamp)
+row format delimited
+fields terminated by '\t'
+stored as textfile
+location 's3://<yourbucket>/sales/'
+table properties ('numRows'='172000');
+``` 
+3. Run the following SQL statement and make sure that your table is reading correctly:
+```sql
+SELECT * 
+FROM spectrum.orders LIMIT 100
+```
+Congratulations, you queried your first S3 file through Amazon Spectrum!
+
+You can view the details of the queries executed by Spectrum by querying the SVL_S3QUERY.
+```sql
+select query, segment, slice, elapsed, s3_scanned_rows, s3_scanned_bytes, s3query_returned_rows, s3query_returned_bytes, files 
+from svl_s3query 
+where query = pg_last_query_id() 
+order by query,segment,slice; 
+```
+
 <hr/></br>
 
 # Introducing Glue and Athena
