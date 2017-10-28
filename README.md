@@ -6,7 +6,7 @@ Hands on workshop is broken up into 5 different sections to get you familiar wit
 - [10 min - Architecture and Permissions](#architecture-and-permissions)</br>
 - [10 min - Query a file on S3 using Athena](#query-a-file-on-s3-with-athena)</br>
 - [10 min - Query a file on S3 using Spectrum](#query-a-file-on-s3-with-spectrum)</br>
-- [10 min - Integrating Glue,Athena & Spectrum](#Integrating-Glue-,-Athena-&-Spectrum)</br>
+- [10 min - Integrating Glue,Athena & Spectrum](#Integrating-Glue-with-Athena-and-Spectrum)</br>
 - [20 min - Breakout Exercises](#breakout-exercises)</br>
 - [50 min - Visualizing and Dashboarding with QuickSight](#visualizing-and-dashboarding-with-quicksight)</br>
 
@@ -296,7 +296,7 @@ below depicts the use case -
 ```
 <hr/></br>
 
-# Integrating Glue,Athena & Spectrum
+# Integrating Glue with Athena and Spectrum
 One of the many benefits of Glue, is its ability to discover and profile data from S3 Objects. This become handy in quickly creating a catalog of new and incoming data.
 To get started:
 1. In Athena, from the **Database** pane on the left hand side, click **Create Table** drop down and select **Automatically**
@@ -355,23 +355,23 @@ ORDER BY year DESC, type DESC
 2. As the the Glue Crawler (Taxi Crawler) has already created the taxi_ny_pub in the labs database, we can start querying these tables using the spectrum service.
 3. Try the following SQL statements. Each of the queries would take around 10 mins to complete on a single node redshift configuration.
  ```sql
-	SELECT *
-	FROM labs.taxi_ny_pub
-	WHERE year BETWEEN '2013' AND '2016' AND type='yellow'
-	ORDER BY pickup_datetime desc
-	LIMIT 10;
+SELECT *
+FROM labs.taxi_ny_pub
+WHERE year BETWEEN '2013' AND '2016' AND type='yellow'
+ORDER BY pickup_datetime desc
+LIMIT 10;
 ```
 ```sql
-	SELECT 
+SELECT 
   	type,
   	year, 
   	count(*) fare_count, 
   	avg(fare_amount) avg_fare, 
   	lag(avg(fare_amount)) over (partition by type order by year asc) last_year_avg_fare
-	FROM labs.taxi_ny_pub
-	WHERE year is not null
-	GROUP BY year, type
-	ORDER BY year DESC, type DESC
+FROM labs.taxi_ny_pub
+WHERE year is not null
+GROUP BY year, type
+ORDER BY year DESC, type DESC
 ```
 You can view the details of the queries executed by Spectrum by querying the SVL_S3QUERY system view.
 ```sql
