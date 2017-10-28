@@ -296,7 +296,7 @@ below depicts the use case -
 ```
 <hr/></br>
 
-# Introducing Glue and Athena
+# Integrating Glue,Athena & Spectrum
 One of the many benefits of Glue, is its ability to discover and profile data from S3 Objects. This become handy in quickly creating a catalog of new and incoming data.
 To get started:
 1. In Athena, from the **Database** pane on the left hand side, click **Create Table** drop down and select **Automatically**
@@ -320,7 +320,7 @@ To get started:
 ![alt text](http://amazonathenahandson.s3-website-us-east-1.amazonaws.com/images/show_taxi_table.png) <br />
 1. Click the table name and explore
 
-## Querying Taxi Data
+## Querying Taxi Data using Athena
 
 1. Switch back to the Athena console
   - You may need to replace the database and/or table names with ones shown in the Data Catalog.
@@ -348,8 +348,38 @@ WHERE year is not null
 GROUP BY year, type
 ORDER BY year DESC, type DESC
 ```
-
 - Remember, you have the ability to **Save a query** for future re-use and reference.
+
+## Querying Taxi Data using Spectrum
+1. Switch to the SQL Editor using SQL Workbench Client
+2. As the the Glue Crawler (Taxi Crawler) has already created the taxi_ny_pub in the labs database, we can start querying these tables using the spectrum service.
+3. Try the following SQL statements. Each of the queries would take around 10 mins to complete on a single node redshift configuration.
+ ```sql
+	SELECT *
+	FROM labs.taxi_ny_pub
+	WHERE year BETWEEN '2013' AND '2016' AND type='yellow'
+	ORDER BY pickup_datetime desc
+	LIMIT 10;
+```
+```sql
+	SELECT 
+  	type,
+  	year, 
+  	count(*) fare_count, 
+  	avg(fare_amount) avg_fare, 
+  	lag(avg(fare_amount)) over (partition by type order by year asc) last_year_avg_fare
+	FROM labs.taxi_ny_pub
+	WHERE year is not null
+	GROUP BY year, type
+	ORDER BY year DESC, type DESC
+```
+You can view the details of the queries executed by Spectrum by querying the SVL_S3QUERY system view.
+```sql
+	select query, segment, slice, elapsed, s3_scanned_rows, s3_scanned_bytes, s3query_returned_rows, s3query_returned_bytes, files 
+	from svl_s3query 
+	where query = pg_last_query_id() 
+	order by query,segment,slice; 
+```
 <hr/></br>
 
 # Breakout Exercises
