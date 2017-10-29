@@ -222,7 +222,7 @@ To get started with Spectrum, we need to provide data to query. This data may or
     In the Events folder, click **Upload** and select the **allevents_pipe.txt** file.
 Make note of the folders you saved this file under.
 
-To start querying Sales data in S3 using Spectrum, we need to create an external table (Sales) and 
+To start querying Sales data in S3 using Spectrum, we need to create an external table (sales) and 
 an external schema (labs) for spectrum to access. This can be achieved by executing the following SQL statements on the SQL Workbench Client 
 
 15. Create external schema and table
@@ -260,14 +260,14 @@ an external schema (labs) for spectrum to access. This can be achieved by execut
 ```
 Congratulations, you queried your first S3 file through Amazon Spectrum!
 
-You can view the details of the queries executed by Spectrum by querying the SVL_S3QUERY system view.
+You can view the amount of data scanned on S3 (scanned bytes/rows) and other details around query execution querying the SVL_S3QUERY system view.
 ```sql
 	select query, segment, slice, elapsed, s3_scanned_rows, s3_scanned_bytes, s3query_returned_rows, s3query_returned_bytes, files 
 	from svl_s3query 
 	where query = pg_last_query_id() 
 	order by query,segment,slice; 
 ```
-One of the common use cases for spectrum is to keep the larger fact tables in Amazon S3 and your smaller dimension tables in Amazon Redshift and then perform a join across the data sets in S3 and in Redshift Cluster. The steps listed
+One of the common use cases for Redshift Spectrum is to keep the larger fact tables in Amazon S3 and your smaller dimension tables in Amazon Redshift and then perform a join across the data sets in S3 and in Redshift Cluster. The steps listed
 below depicts the use case -
 
 18. Create an EVENT table (dimension table) in Redshift. Note that this table is internal to Redshift. 
@@ -353,7 +353,7 @@ ORDER BY year DESC, type DESC
 ## Querying Taxi Data using Spectrum
 1. Switch to the SQL Editor using SQL Workbench Client
 2. As the the Glue Crawler (Taxi Crawler) has already created the taxi_ny_pub in the labs database, we can start querying these tables using the spectrum service.
-3. Try the following SQL statements. Each of the queries would take around 10 mins to complete on a single node redshift configuration.
+3. Run the following SQL queries using the SQL Editor. Each of the queries would take around 10 mins to complete on a single node redshift configuration.
  ```sql
 SELECT *
 FROM labs.taxi_ny_pub
@@ -378,7 +378,7 @@ ORDER BY year DESC, type DESC
 You get the following results from the Spectrum query</br>
 ![alt text](/images/taxi_ny_2.PNG)
 
-You can also view the details of the last query executed by Spectrum by querying the SVL_S3QUERY system view.
+You can view the amount of data scanned on S3 (scanned bytes/rows) and other details around query execution querying the SVL_S3QUERY system view.
 ```sql
 select query, segment, slice, elapsed, s3_scanned_rows, s3_scanned_bytes, s3query_returned_rows, s3query_returned_bytes, files 
 from svl_s3query 
