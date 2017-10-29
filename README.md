@@ -5,7 +5,7 @@ Hands on workshop is broken up into 5 different sections to get you familiar wit
 - [10 min  - Sign Up for AWS](#sign-up-for-aws)</br>
 - [10 min - Architecture and Permissions](#architecture-and-permissions)</br>
 - [10 min - Query a file on S3 using Athena](#query-a-file-on-s3-with-athena)</br>
-- [10 min - Query a file on S3 using Redshift Spectrum](#query-a-file-on-s3-with-spectrum)</br>
+- [20 min - Query a file on S3 using Redshift Spectrum](#query-a-file-on-s3-with-redshift-spectrum)</br>
 - [10 min - Integrating Glue with Athena and Redshift Spectrum](#integrating-glue-with-athena-and-spectrum)</br>
 - [20 min - Breakout Exercises](#breakout-exercises)</br>
 - [50 min - Visualizing and Dashboarding with QuickSight](#visualizing-and-dashboarding-with-quicksight)</br>
