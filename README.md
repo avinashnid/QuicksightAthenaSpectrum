@@ -5,8 +5,8 @@ Hands on workshop is broken up into 5 different sections to get you familiar wit
 - [10 min  - Sign Up for AWS](#sign-up-for-aws)</br>
 - [10 min - Architecture and Permissions](#architecture-and-permissions)</br>
 - [10 min - Query a file on S3 using Athena](#query-a-file-on-s3-with-athena)</br>
-- [10 min - Query a file on S3 using Spectrum](#query-a-file-on-s3-with-spectrum)</br>
-- [10 min - Integrating Glue with Athena and Spectrum](#Integrating-Glue-with-Athena-and-Spectrum)</br>
+- [10 min - Query a file on S3 using Redshift Spectrum](#query-a-file-on-s3-with-spectrum)</br>
+- [10 min - Integrating Glue with Athena and Redshift Spectrum](#integrating-glue-with-athena-and-spectrum)</br>
 - [20 min - Breakout Exercises](#breakout-exercises)</br>
 - [50 min - Visualizing and Dashboarding with QuickSight](#visualizing-and-dashboarding-with-quicksight)</br>
 
@@ -129,7 +129,7 @@ More resources:
 Congratulations, you queried your first S3 file through Amazon Athena!
 <hr/></br>
 
-# Query a file on S3 With Spectrum
+# Query a file on S3 With Redshift Spectrum
 Amazon Redshift Spectrum enables you to run Amazon Redshift SQL queries against exabytes of data in Amazon S3. With Redshift Spectrum, you can extend the analytic power of Amazon Redshift beyond data stored on local disks in your 
 data warehouse to query vast amounts of unstructured data in your Amazon S3 “data lake”
 
