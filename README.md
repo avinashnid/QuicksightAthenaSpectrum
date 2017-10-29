@@ -362,7 +362,7 @@ ORDER BY pickup_datetime desc
 LIMIT 10;
 ```
 You get the following results from the Spectrum query
-![alt text](/images/taxi_ny_1.png) 
+![alt text](/images/taxi_ny_1.PNG) 
 ```sql
 SELECT 
   	type,
@@ -376,7 +376,7 @@ GROUP BY year, type
 ORDER BY year DESC, type DESC
 ```
 You get the following results from the Spectrum query
-![alt text](/images/taxi_ny_2.png)
+![alt text](/images/taxi_ny_2.PNG)
 
 You can also view the details of the last query executed by Spectrum by querying the SVL_S3QUERY system view.
 ```sql
