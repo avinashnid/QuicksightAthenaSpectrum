@@ -1,7 +1,7 @@
 # Serverless Analytics Workshop
 Amazon QuickSight, Amazon Athena and Amazon Spectrum workshop. Workshop will focus on ingesting data into Athena & Spectrum, combining it with other data sources, and visualizing it in QuickSight.
 
-Hands on workshop is broken up into 5 different sections to get you familiar with the Quicksight, Athena & Spectrum services:</br>
+Hands on workshop is broken up into 6 different sections to get you familiar with the Quicksight, Athena & Spectrum services:</br>
 - [10 min  - Sign Up for AWS](#sign-up-for-aws)</br>
 - [10 min - Architecture and Permissions](#architecture-and-permissions)</br>
 - [10 min - Query a file on S3 using Athena](#query-a-file-on-s3-with-athena)</br>
@@ -140,7 +140,7 @@ To use the spectrum service, you need to instantiate a Redshift Cluster.Before y
     - In the navigation pane, choose Roles.
     - Choose Create New Role.
     - Choose AWS Service Role, and then scroll to Amazon Redshift. Choose Select.
-    - The Attach Policy page appears. Choose AmazonS3ReadOnlyAccess and AmazonAthenaFullAccess. Choose Next Step.
+    - The Attach Policy page appears. Choose AmazonS3FullAccess and AmazonAthenaFullAccess. Choose Next Step.
     - For Role Name, type a name for your role, for example mySpectrumRole.
     - Review the information, and then choose Create Role.
     - Copy the Role ARN to your clipboard—this value is the Amazon Resource Name (ARN) for the role that you just created. You use that value when you create external tables to reference your data files on Amazon S3.
@@ -223,7 +223,7 @@ To get started with Spectrum, we need to provide data to query. This data may or
 Make note of the folders you saved this file under.
 
 To start querying Sales data in S3 using Spectrum, we need to create an external table (Sales) and 
-an external schema (spectrum) for spectrum to access. This can be achieved by executing the following SQL statements on the SQL Workbench Client 
+an external schema (labs) for spectrum to access. This can be achieved by executing the following SQL statements on the SQL Workbench Client 
 
 15. Create external schema and table
 ```sql
