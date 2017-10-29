@@ -361,6 +361,8 @@ WHERE year BETWEEN '2013' AND '2016' AND type='yellow'
 ORDER BY pickup_datetime desc
 LIMIT 10;
 ```
+You get the following results from the Spectrum query
+![alt text](/images/taxi_ny_1.png) 
 ```sql
 SELECT 
   	type,
@@ -373,7 +375,10 @@ WHERE year is not null
 GROUP BY year, type
 ORDER BY year DESC, type DESC
 ```
-You can view the details of the queries executed by Spectrum by querying the SVL_S3QUERY system view.
+You get the following results from the Spectrum query
+![alt text](/images/taxi_ny_2.png)
+
+You can also view the details of the last query executed by Spectrum by querying the SVL_S3QUERY system view.
 ```sql
 select query, segment, slice, elapsed, s3_scanned_rows, s3_scanned_bytes, s3query_returned_rows, s3query_returned_bytes, files 
 from svl_s3query 
