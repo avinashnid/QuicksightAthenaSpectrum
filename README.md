@@ -294,6 +294,26 @@ below depicts the use case -
 	group by labs.sales.eventid
 	order by 2 desc;
 ```
+Amazon Redshift supports late binding views and using this functionality you have the option to create a view between tables residing in the redshift cluster and external tables in S3.
+There is no dependency between the view and the objects it references. Because there is no dependency, you can drop or alter a referenced object without affecting the view. 
+Amazon Redshift doesn't check for dependencies until the view is queried. The following queries illustrates the functionality of late binding views - 
+
+21. To create a late-binding view, include the WITH NO SCHEMA BINDING clause. The following query creates a view with no schema binding between the event table in local redshift cluster and sales table in S3.
+```sql  
+create view sales_vw as
+select * from labs.sales, public.event
+with no schema binding;
+```
+22. Select the first 10 elements in the view
+```sql  
+select * from sales_vw limit 10;
+```
+23.Alter the eventname column to title in the event table. Observe that you can re-run the query without recreating the view.
+```sql  
+alter table event rename column title to eventname;
+select * from sales_vw limit 10;
+``` 
+ 
 <hr/></br>
 
 # Integrating Glue with Athena and Spectrum
