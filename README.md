@@ -218,7 +218,7 @@ To get started with Spectrum, we need to provide data to query. This data may or
   - **Open the S3 Console** from the Services drop down menu
   - Hit **Create folder** and name it "B2B"
   - Create folders within B2B called "sales" and "Events"
-  - Download sample dataset [Sales](https://slalom-seattle-ima.s3-us-west-2.amazonaws.com/docs/sales_ts.zip). Unzip the dataset files into a folder. In the sales folder Click on  **Upload** and select the **sales_ts.000** .
+  - Download sample dataset [B2B Orders](https://slalom-seattle-ima.s3-us-west-2.amazonaws.com/docs/B2B%20Dataset.zip). Unzip the dataset files into a local folder. In the sales folder Click on  **Upload** and select the **sales_ts.000** .
     In the Events folder, click **Upload** and select the **allevents_pipe.txt** file.
 Make note of the folders you saved this file under.
 
