@@ -220,8 +220,8 @@ Now that you have the prerequisites completed, you can launch your Amazon Redshi
 	- Save the profile using Save profile list icon</br>  
 
 At this point you have a database called dev in the redshift cluster and connected to it using the SQL Workbench/J client. 
-To get started with Spectrum, start with the data in the sales folder created in the B2B folder.
-  - 
+To get started with Spectrum, start with the data in the sales folder created in the B2B folder.</br>
+
 
 To start querying Sales data in S3 using Spectrum, we need to create an external table (sales) and 
 an external schema (labs) for spectrum to access. This can be achieved by executing the following SQL statements on the SQL Workbench Client 
