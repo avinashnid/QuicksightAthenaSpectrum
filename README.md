@@ -46,17 +46,23 @@ https://s3-us-west-2.amazonaws.com/slalom-seattle-ima/scripts/cloudformation/cf_
 ![alt text](/images/cloudformationStatus.PNG)
 <hr/></br>
 
-# Query a file on S3 With Athena
-To get started with Athena and QuickSight, we need to provide data to query. This data may originate from a variety of sources into S3, but for this example we will upload a file into S3 manually.
+# Populate S3 Bucket with data to query.
+To get started with the analytics workshop, we need to provide data to query. This data may originate from a variety of sources into S3, but for this example we will upload a file into S3 manually.
 1. **Open the S3 Console** from the Services drop down menu
 2. Click your newly created bucket, by you or by our CloudFormation script.
 3. Hit **Create folder** and name it "B2B"
-4. Create another folder within B2B called "orders"
-5. Download sample dataset [B2B Orders](https://slalom-seattle-ima.s3-us-west-2.amazonaws.com/docs/B2B%20Dataset.zip). Unzip the dataset files into a folder. Click on new folder and **Upload** the **orders.csv**.
-6. Make note of the folders you saved this file under.
-7. Open the **Athena** console from the Services dropdown.
-8. Create a table manually via DDL in the query window.
-9. Replace the location value to the folder location of your dataset. s3://**your bucket name**/B2B/orders/
+4. Download sample dataset [B2B Datasets](https://s3.amazonaws.com/hands-on-lab-spectrum-quicksight-athena/B2B%20Dataset.zip). Unzip the dataset files into a local folder.
+5. Create a folder within B2B called "orders"
+6. Click on new folder and **Upload** the **orders.csv**.
+7. Create folders within B2B called "sales" and "events"
+8. In the sales folder Click on  **Upload** and select the **sales_ts.000**.
+9. In the events folder, click **Upload** and select the **allevents_pipe.txt** file.
+10. Make note of the folders you saved this file under.
+
+# Query a file on S3 With Athena
+1. Open the **Athena** console from the Services dropdown.
+2. Create a table manually via DDL in the query window.
+3. Replace the location value to the folder location of your dataset. s3://**your bucket name**/B2B/orders/
 ```sql
 CREATE DATABASE labs
 ```
@@ -83,14 +89,14 @@ WITH SERDEPROPERTIES (
 ) LOCATION 's3://<your bucket here>/B2B/orders/'
 TBLPROPERTIES ('has_encrypted_data'='false')
 ```
-10. Hit **Run Query**
+4. Hit **Run Query**
 
-11. Run the following SQL statement and make sure that your table is reading correctly:
+5. Run the following SQL statement and make sure that your table is reading correctly:
 ```sql
 SELECT * 
 FROM labs.orders LIMIT 100
 ```
-12. Show Create Table statement helps you better understand what it going on behind the scenes when creating a table.
+6. Show Create Table statement helps you better understand what it going on behind the scenes when creating a table.
 ```sql
 SHOW CREATE TABLE labs.orders
 ```
@@ -214,13 +220,8 @@ Now that you have the prerequisites completed, you can launch your Amazon Redshi
 	- Save the profile using Save profile list icon</br>  
 
 At this point you have a database called dev in the redshift cluster and connected to it using the SQL Workbench/J client. 
-To get started with Spectrum, we need to provide data to query. This data may originate from a variety of sources into S3, but for this example we will upload a file into S3 manually.
-  - **Open the S3 Console** from the Services drop down menu
-  - Hit **Create folder** and name it "B2B"
-  - Create folders within B2B called "sales" and "Events"
-  - Download sample dataset [B2B Orders](https://slalom-seattle-ima.s3-us-west-2.amazonaws.com/docs/B2B%20Dataset.zip). Unzip the dataset files into a local folder. In the sales folder Click on  **Upload** and select the **sales_ts.000** .
-    In the Events folder, click **Upload** and select the **allevents_pipe.txt** file.
-Make note of the folders you saved this file under.
+To get started with Spectrum, start with the data in the sales folder created in the B2B folder.
+  - 
 
 To start querying Sales data in S3 using Spectrum, we need to create an external table (sales) and 
 an external schema (labs) for spectrum to access. This can be achieved by executing the following SQL statements on the SQL Workbench Client 
@@ -280,9 +281,9 @@ below depicts the use case -
 	eventname varchar(200),
 	starttime timestamp); 
 ```
-19. Load the EVENT table in Redshift using the COPY command with the data being pulled from Events folder in B2B. Replace the IAM role ARN in the following COPY command with the role ARN you created in step 2.
+19. Load the EVENT table in Redshift using the COPY command with the data being pulled from events folder in B2B. Replace the IAM role ARN in the following COPY command with the role ARN you created in step 2.
 ```sql
-	copy event from 's3://yourbucket/B2B/Events/allevents_pipe.txt' 
+	copy event from 's3://yourbucket/B2B/events/allevents_pipe.txt' 
 	iam_role 'yourarn/mySpectrumRole'
 	delimiter '|' timeformat 'YYYY-MM-DD HH:MI:SS' region 'us-east-1';
 ```
