@@ -412,7 +412,7 @@ order by query,segment,slice;
 
 ## Breakout 1 - Load B2B Dataset
 
-Now that we have learned about crawlers, lets put it to use to load the rest of our [B2B Orders](https://slalom-seattle-ima.s3-us-west-2.amazonaws.com/docs/B2B%20Dataset.zip) dataset.
+Now that we have learned about crawlers, lets put it to use to load the rest of our [B2B Datasets](https://s3.amazonaws.com/hands-on-lab-spectrum-quicksight-athena/B2B%20Dataset.zip) dataset.
 
 - Unzip the data, and upload it to your S3 Bucket **remember, one folder represents one table.**
 - Run a crawler through your bucket to discovery the dataset.
